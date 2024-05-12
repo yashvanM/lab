@@ -1,0 +1,309 @@
+﻿QUESTIONS AND ANSWERS FOR IMAGE PROCESSING – NAAN MUDHALVAN 
+1) How to Load and Display an Image in MATLAB? 
+clc; clear all; close all; 
+% Load an image 
+img = imread('peppers.png'); 
+% Display the image 
+imshow(img); 
+  
+
+2)How to Blur an Image in MATLAB? 
+clc; clear all; close all; 
+% Load the image 
+img = imread('peppers.png'); 
+% Apply Gaussian blur 
+blurred_img = imgaussfilt(img, 2); 
+% Display the blurred image 
+imshow(blurred_img);
+  
+3)How to Enhance Image Contrast using Histogram Equalization in MATLAB? 
+clc; clear all; close all; 
+img = imread('peppers.png'); 
+gray_img = rgb2gray(img); % Convert to grayscale 
+filtered_img = medfilt2(gray_img); % Apply median filtering enhanced_img = histeq(filtered_img); % Perform histogram equalization subplot(1, 2, 1); 
+imshow(enhanced_img); 
+title('Enhanced Image'); 
+subplot(1, 2, 2); 
+imhist(enhanced_img); 
+title('Histogram');
+  
+
+4) How to Apply a Sobel Filter for Edge Detection in MATLAB? clc; clear all; close all; 
+% Load the image 
+img = imread('peppers.png'); 
+% Convert to grayscale 
+img_gray = rgb2gray(img); 
+% Apply Sobel filter 
+edge_img = edge(img_gray,'sobel' ); 
+% Display all three images 
+subplot(1,3,1); 
+imshow(img); 
+title('Original Image'); 
+subplot(1,3,2); 
+imshow(img_gray); 
+title('Grayscale Image'); 
+subplot(1,3,3); 
+imshow(edge_img); 
+title('Edge-detected Image');
+  
+
+5)How to Apply Fourier Transform to an Image in MATLAB? clc; clear all; close all; 
+% Load the image 
+img = imread('peppers.png'); 
+% Convert to grayscale 
+img_gray = rgb2gray(img); 
+% Compute Fourier Transform 
+fft_img = fft2(img_gray); 
+% Display the magnitude spectrum 
+magnitude_spectrum = log(1 + abs(fftshift(fft_img))); imshow(magnitude_spectrum, []); 
+% Print results 
+disp('Max value in magnitude spectrum:'); 
+disp(max(magnitude_spectrum(:))); 
+disp('Min value in magnitude spectrum:'); 
+disp(min(magnitude_spectrum(:)));
+  
+
+6)How can you import an image, apply a Gaussian filter to it, print the mean value and standard deviation of the filtered image in MATLAB? 
+clc; clear all; close all; 
+% Import the image 
+img = imread('peppers.png'); 
+% Convert the image to grayscale 
+img_gray = rgb2gray(img); 
+% Define Gaussian parameters 
+kernel_size = 5; % Size of the kernel (odd number) 
+sigma = 2; % Standard deviation of the Gaussian distribution % Create Gaussian kernel 
+gaussian_kernel = fspecial('gaussian', kernel_size, sigma); % Apply Gaussian filter 
+filtered_img = imfilter(img_gray, gaussian_kernel, 'conv', 'replicate'); % Display the filtered image 
+imshow(filtered_img); 
+title('Filtered Image'); 
+% Compute some features (e.g., mean and standard deviation) mean_val = mean(filtered_img(:)); 
+std_dev = std(double(filtered_img(:))); 
+% Print the computed features 
+fprintf('Mean value of filtered image: %f\n', mean_val); 
+fprintf('Standard deviation of filtered image: %f\n', std_dev);
+  
+7)How to Identify Lane Boundaries in an Image using MATLAB? 
+clc; clear all; close all; 
+% Load the image 
+img = imread('peppers.png'); 
+% Convert to grayscale 
+img_gray = rgb2gray(img); 
+% Apply edge detection 
+edge_img = edge(img_gray, 'Canny'); 
+% Identify lane boundaries using Hough transform [H,theta,rho] = hough(edge_img); 
+peaks = houghpeaks(H,5); 
+lines = houghlines(edge_img,theta,rho,peaks); % Draw the detected lines on the image 
+imshow(img), hold on 
+for k = 1:length(lines) 
+xy = [lines(k).point1; lines(k).point2]; 
+plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green'); end
+  
+8)How to Perform Image Filtering and defiltering in MATLAB? 
+clc; clear all; close all; 
+% Load the image 
+img = imread('peppers.png'); 
+% Define a filter 
+filter = fspecial('average', [5 5]); 
+% Apply the filter 
+filtered_img = imfilter(img, filter); 
+% Display the filtered image 
+subplot(1, 2, 1); 
+imshow(filtered_img); 
+title('Filtered Image'); 
+% Define the inverse filter (deconvolution) 
+inv_filter = fspecial('unsharp', 0.5); 
+% Apply the inverse filter (deconvolution) 
+deconvolved_img = deconvwnr(filtered_img, inv_filter, 0.01); % Display the deconvolved image 
+subplot(1, 2, 2); 
+imshow(deconvolved_img); 
+title('Deconvolved Image');
+  
+
+9) How to Perform Image Thresholding in MATLAB? 
+clc; clear all; close all; 
+% Read the image 
+img = imread('peppers.png'); 
+% Convert to grayscale if necessary 
+if size(img, 3) == 3 
+img = rgb2gray(img); 
+end 
+% Define the threshold value 
+threshold_value = 128; 
+% Perform thresholding 
+binary_img = img > threshold_value; 
+% Display the original and thresholded images 
+subplot(1,2,1), imshow(img), title('Original Image'); subplot(1,2,2), imshow(binary_img), title('Thresholded Image'); 
+  
+10)How to Perform Image Restoration ? 
+clc; clear all; close all; 
+% Read the noisy image 
+noisy_img = imread('peppers.png'); 
+% Convert to grayscale if necessary 
+if size(noisy_img, 3) == 3 
+noisy_img = rgb2gray(noisy_img); 
+end 
+% Define the size of the Gaussian filter 
+filter_size = 5; 
+% Define the standard deviation of the Gaussian filter sigma = 2; 
+% Apply Gaussian filter for image restoration 
+restored_img = imgaussfilt(noisy_img, sigma); 
+% Display the original and restored images 
+subplot(1,2,1), imshow(noisy_img), title('Noisy Image'); subplot(1,2,2), imshow(restored_img), title('Restored Image');
+  
+
+11)How to Import and Manipulate Excel Data in MATLAB? 
+clc; clear all; close all; 
+% Import Excel data 
+data = xlsread('patients.xls'); 
+% Perform manipulation 
+manipulated_data = data * 2; 
+% Display the manipulated data 
+disp(manipulated_data);
+  
+
+12)How to Convert an Image from RGB to Grayscale in MATLAB? clc; clear all; close all; 
+% Load the RGB image 
+rgb_img = imread('example.tif'); 
+% Convert to grayscale 
+gray_img = rgb2gray(rgb_img); 
+% Display the grayscale image 
+imshow(gray_img); 
+  
+
+13)How to Perform Image Segmentation using Otsu's Method in MATLAB? clc; clear all; close all; 
+% Load the grayscale image 
+img = imread('peppers.png'); 
+% Convert to grayscale if necessary 
+if size(img, 3) == 3 
+img = rgb2gray(img); 
+end 
+% Perform segmentation using Otsu's method 
+threshold = graythresh(img); 
+binary_img = imbinarize(img, threshold); 
+% Display the segmented image 
+imshow(binary_img);
+  
+14)How to Perform Image Segmentation using Watershed Algorithm in MATLAB? clc; clear all; close all; 
+% Load the grayscale image 
+img = imread('peppers.png'); 
+% Convert to grayscale if necessary 
+if size(img, 3) == 3 
+img = rgb2gray(img); 
+end 
+% Compute gradient magnitude 
+gradient_mag = imgradient(img); 
+% Perform watershed segmentation 
+marker = imextendedmin(gradient_mag, 0.2); 
+marker = imimposemin(-gradient_mag, marker); 
+labels = watershed(marker); 
+% Display the segmented image 
+imshow(label2rgb(labels));
+  
+
+15)How to Perform Template Matching in MATLAB? 
+clc; clear all; close all; 
+input = imread('peppers.png'); 
+mask = imread('Capture.PNG'); 
+gleam = @(I) (1/3) * ((double(I(:,:,1))/255).^(1/2.2) + ... (double(I(:,:,2))/255).^(1/2.2) + ... 
+(double(I(:,:,3))/255).^(1/2.2)); 
+normalize = @(I) (I-min(min(I)))/(max(max(I))-min(min(I))); g_input = gleam(input); 
+g_mask = gleam(mask); 
+gd_input = conv2(g_input, [-1 0 1; -1 0 1; -1 0 1]/3, 'same') + ... conv2(g_input, [-1 -1 -1; 0 0 0; 1 1 1]/3, 'same'); 
+gd_mask = conv2(g_mask, [-1 0 1; -1 0 1; -1 0 1]/3, 'same') + ... conv2(g_mask, [-1 -1 -1; 0 0 0; 1 1 1]/3, 'same'); 
+gd_mask = rot90(gd_mask, 2); 
+convolved = conv2(gd_input, gd_mask, 'valid'); 
+[min_value, min_index] = min(convolved(:)); 
+[min_row, min_col] = ind2sub(size(convolved), min_index); figure; imshow(normalize(convolved)); hold on; 
+rectangle('Position', [min_col-32+2 min_row-32+2 64 64], 'EdgeColor', [1 0 0]); 
+figure; imshow(input*0.75+64); hold on; 
+rectangle('Position', [min_col+2 min_row+2 64 64], ... 
+'EdgeColor', [0.5 0 0], ... 
+'LineWidth', 3, ... 
+'LineStyle', ':');
+  
+
+
+16)How to Perform Image Segmentation using Region Growing in MATLAB? clc; 
+clear all; 
+close all; 
+gray1=imread('peppers.png'); %to read img 1 
+gray=rgb2gray(gray1) 
+figure(); 
+imshow(gray) 
+title('Original Image'); 
+% gray=rgb2gray(var); 
+so=edge(gray,'sobel'); %type -1 sobel edge detection ca=edge(gray,'canny'); %type -2 canny edge detection % subplot(3,1,2) 
+figure(); 
+imshow(so); 
+title('SO Edge Detection');
+% subplot(3,1,3) 
+figure(); 
+imshow(ca); 
+title('ca Edge Detection'); 
+17)Create Simple Neural Network in MATLAB? clc; 
+clear all; 
+close all;
+% Define the input data 
+X = [0 0; 0 1; 1 0; 1 1]; % Input features 
+Y = [0; 1; 1; 0]; % Target outputs 
+% Create a feedforward neural network 
+net = feedforwardnet(10); % 10 neurons in the hidden layer % Train the neural network 
+net = train(net, X', Y'); 
+% Test the neural network with new data 
+output = net(X'); 
+% Display the output 
+disp('Predicted Output:'); 
+disp(output);
+
+
+
+18)How to Perform Image Segmentation using K-Means Clustering in MATLAB? clc; 
+clear all; 
+close all; 
+% Load the image 
+img = imread('peppers.png'); 
+% Reshape the image into a 2D array 
+[rows, cols, ~] = size(img); 
+X = reshape(img, rows * cols, []); 
+% Perform K-Means clustering 
+K = 3; % Number of clusters 
+[idx, centers] = kmeans(double(X), K); 
+% Reshape the clustered image 
+segmented_img = reshape(idx, rows, cols); 
+% Display the segmented image 
+imshow(segmented_img, []); colormap(gca, 'parula'); 
+19)How to Extract Features using Harris Corner Detection in MATLAB? 
+clc; 
+clear all; 
+close all; 
+% Load the grayscale image
+img = imread('peppers.png'); 
+% Convert to grayscale 
+img_gray = rgb2gray(img); 
+% Perform Harris corner detection 
+corners = detectHarrisFeatures(img_gray); 
+% Display the detected corners 
+imshow(img); 
+hold on; 
+plot(corners); 
+20) How to plot boundary box on object present in the image using MATLAB? clc; 
+clear all; 
+close all; 
+% Read the image 
+image = imread('peppers.png'); 
+% Convert the image to grayscale 
+image_gray = rgb2gray(image); 
+% Perform edge detection 
+edges = edge(image_gray, 'Canny'); 
+% Perform connected component analysis 
+cc = bwconncomp(edges);
+% Get bounding boxes of connected components 
+bounding_boxes = regionprops(cc, 'BoundingBox'); 
+% Draw bounding boxes on the original image 
+imshow(image); 
+hold on; 
+for i = 1:numel(bounding_boxes) 
+rectangle('Position', bounding_boxes(i).BoundingBox, 'EdgeColor', 'r', 'LineWidth', 2); 
+end 
+title('Bounding Box Detection'); 
+hold off;
